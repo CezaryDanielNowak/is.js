@@ -81,6 +81,14 @@ is = {
 	isType function(input, type)
 	kindle function()
 	linux function()
+	iOS function(returnNumber)
+	iOS9 function()
+	iOS10 function()
+	iOS11 function()
+	cordova function()
+	browser function()
+	localStorageSupported function()
+	userMediaSupported function()
 	mac function()
 	mobile function()
 	offline function()
@@ -120,13 +128,21 @@ is = {
 				'mc' || 'MasterCard',
 				'Visa'
 		isEmail function(input)
+		isJSON function(input)
 		isLatLng function(input)
 		isLatLong function(input)
-		isPhone function(input, country)
-			country: 'ar': 'ar', 'au', 'ca', 'fr', 'is', 'uk', 'us'
+		isPhone function(input, country = 'universal')
+			country: 'ar': 'ar', 'au', 'ca', 'fr', 'is', 'uk', 'us', 'pl', 'universal'
 		isZip function(input, country)
 			country: 'us', 'se', 'pl', 'nl', 'jp', 'it', 'is', 'hu', 'gb', 'es',
 					 'de', 'dk', 'ca', 'br', 'be', 'at', 'au', 'ar'
+
+		maxLen function(input, len, trim)
+		minLen function(input, len, trim)
+		isTemplateTagArgs function(input)
+		hasDigits function(input)
+		hasLowerCaseLetter function(input)
+		hasUpperCaseLetter function(input)
 	}
 }
 ```

@@ -1,14 +1,119 @@
-var strEmpty = '', 
-	str = 'This is a string', 
+var strEmpty = '',
+	str = 'This is a string',
 	obj = {},
-	creditCard = "5196255216134695", 
-	d = new Date(), 
-	arr = [], 
+	creditCard = "5196255216134695",
+	d = new Date(),
+	arr = [],
 	bool = true,
 	fl = 22.5,
 	integer = 23,
-	reg = /abc/;
-
+	reg = /abc/,
+	iOSAppVersion = '5.0 (iPhone; CPU iPhone OS 11_0_2 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A421 Safari/604.1',
+	androidAppVersion = '8.0',
+	iOSPlatform = { platform: 'iPhone' },
+	androidPlatform = { platform: 'Android' },
+	allBrowserTests = [
+		'ie', 'ie6', 'ie7', 'ie8', 'ie9', 'ie10', 'ie11', 'firefox', 'gecko', 'opera', 'safari',
+		'thirdPartyIOSBrowser', 'chrome', 'edge', 'webkit', 'mobile', 'brave'
+	].sort(),
+	userAgents = {
+		edgeOnIOS11: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_2 like Mac OS X) AppleWebKit/603.2.4 (KHTML, like Gecko) Mobile/14F89 Safari/603.2.4 EdgiOS/41.1.35.1',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		edgeOnAndroid8: {
+			ua: 'Mozilla/5.0 (Linux; Android 8.0; Pixel XL Build/OPP3.170518.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.0 Mobile Safari/537.36 EdgA/41.1.35.1',
+			av: androidAppVersion,
+			navigator: androidPlatform,
+			expected: ['chrome', 'gecko', 'mobile', 'webkit'],
+		},
+		safariOnIOS10: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.3 (KHTML, like Gecko) Version/10.0 Mobile/14C5062e Safari/602.1',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['safari', 'gecko', 'webkit', 'mobile'],
+		},
+		safariOnIOS11: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A356 Safari/604.1',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['safari', 'gecko', 'webkit', 'mobile'],
+		},
+		safariOnIOS12: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['safari', 'gecko', 'webkit', 'mobile'],
+		},
+		chromeOnIOS10: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['chrome', 'gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		chromeOnIOS11: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_4 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) CriOS/67.0.3396.59 Mobile/15F79 Safari/604.1',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['chrome', 'gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		firefoxOnIOS10: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_2 like Mac OS X) AppleWebKit/603.2.4 (KHTML, like Gecko) FxiOS/7.5b3349 Mobile/14F89 Safari/603.2.4',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['firefox', 'gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		firefoxOnIOS11: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_6 like Mac OS X) AppleWebKit/604.5.6 (KHTML, like Gecko) FxiOS/10.6b8836 Mobile/15D100 Safari/604.5.6',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['firefox', 'gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		googleSearchOnIOS10: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_1_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) GSA/20.3.136880903 Mobile/14B100 Safari/600.1.4',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		googleSearchOnIOS11: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_1_2 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) GSA/40.1.177082287 Mobile/15B202 Safari/604.1',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		puffinOnIOS11: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0_2 like Mac OS X; en-GB) AppleWebKit/537.36 (KHTML, like Gecko) Version/11.0.2 Mobile/15A421 Safari/537.36 Puffin/5.2.2IP Chrome/63.0.1234.56',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		operaMiniOnIOS11: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0_2 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) OPiOS/16.0.10.121137 Mobile/15A421 Safari/9537.53',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		braveOnIOS11: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0_2 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) FxiOS/1.6.2b18.05.29.10 Mobile/15A421 Safari/604.1.38 _id/000001',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['brave', 'firefox', 'gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		alohaBrowserOnIOS11: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) AlohaBrowser/2.4.3b1 Mobile/15F79',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+		dolphinBrowserOnIOS11: {
+			ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) AlohaBrowser/2.4.3b1 Mobile/15F79',
+			av: iOSAppVersion,
+			navigator: iOSPlatform,
+			expected: ['gecko', 'mobile', 'thirdPartyIOSBrowser', 'webkit'],
+		},
+	};
 
 /*** Object Functions ***/
 QUnit.test("isArray", function( assert ) {
@@ -176,6 +281,18 @@ QUnit.test("isType", function( assert ) {
 	equal( is.isType( obj, "String" ), false, "Object is not type String" );
 });
 
+QUnit.test("isPromise", function( assert ) {
+	equal( is.isPromise( new Promise(function(resolve) { resolve() }) ), true, "Promise is a Promise" );
+	equal( is.isPromise( null ), false, "null is not a Promise" );
+	equal( is.isPromise( str ), false, "String is not a Promise" );
+	equal( is.isPromise( arr ), false, "Array is not a Promise" );
+	equal( is.isPromise( reg ), false, "Regexp is not a Promise" );
+	equal( is.isPromise( d ), false, "Date is not a Promise" );
+	equal( is.isPromise( bool ), false, "Boolean is not a Promise" );
+	equal( is.isPromise( integer ), false, "Number is not a Promise" );
+	equal( is.isPromise( obj ), false, "Object is not a Promise" );
+});
+
 
 /*** String Functions ***/
 QUnit.test("string.isBlank", function( assert ) {
@@ -207,18 +324,20 @@ QUnit.test("string.isLatLng and string.isLatLong", function( assert ) {
 
 QUnit.test("string.isPhone", function( assert ) {
 	var ar1 = '1234-5678',
-		au1 = '0491 570 156', 
-		au2 = '+61 491 570 156', 
-		ca1 = '613-555-0195', 
-		ca2 = '1-613-555-0195', 
-		fr1 = '03 7291 6437', 
-		fr2 = '04.48.95.09.94', 
-		is1 = '479 5406', 
-		is2 = '438 7049', 
-		uk1 = '01632 960483', 
-		uk2 = '+44 1632 960483', 
-		us1 = '202-555-0173', 
-		us2 = '1-202-555-0173';
+		au1 = '0491 570 156',
+		au2 = '+61 491 570 156',
+		ca1 = '613-555-0195',
+		ca2 = '1-613-555-0195',
+		fr1 = '03 7291 6437',
+		fr2 = '04.48.95.09.94',
+		is1 = '479 5406',
+		is2 = '438 7049',
+		uk1 = '01632 960483',
+		uk2 = '+44 1632 960483',
+		us1 = '202-555-0173',
+    us2 = '1-202-555-0173',
+    pl1 = '+48533628000',
+		pl2 = '0048533628000';
 
 	equal( is.string.isPhone( ar1, 'ar' ), true, "'123-4564' is an AR phone number" );
 	equal( is.string.isPhone( au1, 'au' ), true, "'0491 570 156' is an AU phone number" );
@@ -232,7 +351,12 @@ QUnit.test("string.isPhone", function( assert ) {
 	equal( is.string.isPhone( uk1, 'uk' ), true, "'01632 960483' is a UK phone number" );
 	equal( is.string.isPhone( uk2, 'uk' ), true, "'+44 1632 960483' is a UK phone number" );
 	equal( is.string.isPhone( us1, 'us' ), true, "'202-555-0173' is a US phone number" );
-	equal( is.string.isPhone( us2, 'us' ), true, "'1-202-555-0173' is a US phone number" );
+  equal( is.string.isPhone( us2, 'us' ), true, "'1-202-555-0173' is a US phone number" );
+  equal( is.string.isPhone( us2, ['ca', 'fr', 'us'] ), true, "'1-202-555-0173' is one of: US, FR, CA phone numbers" );
+  equal( is.string.isPhone( pl1, 'pl' ), true, "'+48533628000' is a PL phone number" );
+  equal( is.string.isPhone( pl2, 'pl' ), true, "'0048533628000' is a PL phone number" );
+
+
 });
 
 QUnit.test("string.isZip", function( assert ) {
@@ -281,7 +405,7 @@ QUnit.test("string.minLen and string.maxLen", function( assert ) {
 	equal( is.string.minLen(str1, 4), true, "4-character string is minLen of 4" );
 	equal( is.string.minLen(str2, 4, true), true, "trimmed 4-character string is minLen of 4" );
 	equal( is.string.minLen(str1, 5), false, "4-character string is not minLen of 5" );
-	
+
 	equal( is.string.maxLen(str1, 4), true, "4-character string is maxLen of 4" );
 	equal( is.string.maxLen(str2, 4, true), true, "trimmed 4-character string is maxLen of 4" );
 	equal( is.string.maxLen(str2, 3, true), false, "4-character string is not maxLen of 3" );
@@ -354,4 +478,31 @@ QUnit.test("OS Check", function( assert ) {
 	ok( is.mac(), "I am using MAC" );
 	ok( is.unix(), "I am using UNIX" );
 	ok( is.linux(), "I am using LINUX" );
+});
+
+QUnit.test("browser features", function( assert ) {
+	ok( is.browser(), "I am using browser (not a NodeJS)" );
+	ok( is.localStorageSupported(), "My browser supports localStorage" );
+	ok( is.userMediaSupported(), "My browser supports getUserMedia" );
+	ok( is.inAppBrowser(), "I am using in-app-browser" );
+});
+
+const getDetectedBrowsers = () => allBrowserTests.reduce(function(result, browser) {
+	if (is[browser]()) {
+		result.push(browser);
+	}
+	return result;
+}, []);
+
+QUnit.test("browser detection", function( assert ) {
+	Object.keys(userAgents).forEach((browserName) => {
+		var userAgent = userAgents[browserName];
+		is._mock('ua', userAgent.ua);
+		is._mock('av', userAgent.av);
+		is._mock('navigator', userAgent.navigator);
+
+		deepEqual(getDetectedBrowsers(), userAgent.expected.sort(), browserName + ' detection should return ' + JSON.stringify(userAgent.expected));
+
+		is._mockReset();
+	});
 });

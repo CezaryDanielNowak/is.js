@@ -1,6 +1,6 @@
 {
   "name": "next-is",
-  "version": "2.0.1",
+  "version": "2.0.18",
   "description": "Micro validation library",
   "main": "next-is.js",
   "scripts": {
